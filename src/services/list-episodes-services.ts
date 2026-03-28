@@ -1,0 +1,55 @@
+const serviceListEpisodes = async () => {
+  const episodes = [
+    {
+      videoId: 'OqK6r9Q8A4s',
+      podcastName: 'flow',
+      episode: 'RENATO CARIANI E JULIO BALESTRIN - Flow Podcast #300',
+      category: ['saúde', 'fitness', 'bodybuilder'],
+    },
+    {
+      videoId: '72OibV7_ZAE',
+      podcastName: 'flow',
+      episode: 'SÉRGIO SACANI (SPACETODAY) - Flow Podcast #350',
+      category: ['ciência', 'astronomia', 'educação'],
+    },
+    {
+      videoId: '8TmVj_yK_hU',
+      podcastName: 'flow',
+      episode: 'GAULES - Flow Podcast #200',
+      category: ['games', 'esports', 'tecnologia'],
+    },
+    {
+      videoId: 'fXkX6yHl2wY',
+      podcastName: 'flow',
+      episode: 'RONALDO FENÔMENO - Flow Podcast #105',
+      category: ['esportes', 'futebol', 'entrevista'],
+    },
+    {
+      videoId: '8fN_Z3gGZcw',
+      podcastName: 'flow',
+      episode: 'ARTHUR PÊTRI E TIAGO CARVALHO (A DERIVA) - Flow Podcast #410',
+      category: ['comédia', 'humor', 'entretenimento'],
+    },
+    {
+      videoId: '5g19XlXwRGE',
+      podcastName: 'flow',
+      episode: 'FELIPE NETO - Flow Podcast #502',
+      category: ['youtube', 'internet', 'entretenimento'],
+    },
+    {
+      videoId: 'wJ9pZq2oXp0',
+      podcastName: 'flow',
+      episode: 'PAULO MUZY - Flow Podcast #288',
+      category: ['saúde', 'medicina', 'bodybuilder'],
+    },
+    {
+      videoId: 'xLwP3_V5T4E',
+      podcastName: 'flow',
+      episode: 'MANO BROWN - Flow Podcast #250',
+      category: ['música', 'rap', 'cultura'],
+    },
+  ];
+  return episodes;
+};
+
+export { serviceListEpisodes };
