@@ -1,9 +1,3 @@
-interface Podcast {
-    videoId: string;
-    podcastName: string;
-    episode: string;
-    category: string[];
-}
-export declare const repositoryPodcast: () => Promise<Podcast[]>;
-export {};
+import { type IPodcast } from '../models/podcast-model.js';
+export declare const repositoryPodcast: (podcastName?: string) => Promise<IPodcast[]>;
 //# sourceMappingURL=podcast-repostories.d.ts.map
