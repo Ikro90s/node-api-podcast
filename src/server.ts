@@ -3,16 +3,20 @@ import {
   getFilterEpisodes,
   getListEpisodes,
 } from './controllers/podcasts-controller.js';
+import { Routes } from './routes/routes.js';
+import { HttpMethods } from './utils/http-methods.js';
 const port = process.env.PORT || 3000;
 
 const server = http.createServer(
-  async (req: http.IncomingMessage, res: http.ServerResponse) => {
+  async (request: http.IncomingMessage, response: http.ServerResponse) => {
+    const [baseUrl] = request.url?.split('?') || [];
+    console.log('baseUrl:', baseUrl);
     //listar podcasts
-    if (req.method === 'GET' && req.url === '/api/list-episodes')
-      await getListEpisodes(req, res);
+    if (request.method === HttpMethods.GET && baseUrl === Routes.LIST)
+      await getListEpisodes(request, response);
     //filtrar podcasts
-    if (req.method === 'GET' && req.url === '/api/filter-episodes')
-      await getFilterEpisodes(req, res);
+    if (request.method === HttpMethods.GET && baseUrl === Routes.FILTER)
+      await getFilterEpisodes(request, response);
   },
 );
 
