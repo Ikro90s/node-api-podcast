@@ -1,6 +1,6 @@
 import type { IPodcast } from './podcast-model.js';
 
-export interface filterPodcastModel {
+export interface podcastTransferModel {
   statusCode: number;
   body: IPodcast[];
 }

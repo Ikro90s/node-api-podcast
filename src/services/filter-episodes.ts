@@ -1,10 +1,11 @@
-import type { filterPodcastModel } from '../models/filter-podcast-model.js';
-import { repositoryPodcast } from '../repositories/podcast-repostories.js';
+import type { podcastTransferModel } from '../models/podcast-transfer-model.js';
+import { repositoryPodcast } from '../repositories/podcast-repositories.js';
+import { StatusCode } from '../utils/status-code.js';
 
 const serviceFilterEpisodes = async (
   url: string | undefined,
-): Promise<filterPodcastModel> => {
-  let responseFormat: filterPodcastModel = {
+): Promise<podcastTransferModel> => {
+  let responseFormat: podcastTransferModel = {
     statusCode: 0,
     body: [],
   };
@@ -16,12 +17,10 @@ const serviceFilterEpisodes = async (
   const queryString = params.get('p') || '';
   const data = await repositoryPodcast(queryString);
 
-  if (data.length !== 0) {
-    responseFormat.statusCode = 200;
-    responseFormat.body = data;
-  } else {
-    responseFormat.statusCode = 204;
-  }
+  responseFormat.statusCode = data.length
+    ? StatusCode.OK
+    : StatusCode.NO_CONTENT;
+  responseFormat.body = data;
   return responseFormat;
 };
 

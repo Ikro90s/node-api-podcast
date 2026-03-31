@@ -1,7 +1,16 @@
-import { repositoryPodcast } from '../repositories/podcast-repostories.js';
+import { repositoryPodcast } from '../repositories/podcast-repositories.js';
+import { StatusCode } from '../utils/status-code.js';
 const serviceListEpisodes = async () => {
+    let responseFormat = {
+        statusCode: 0,
+        body: [],
+    };
     const data = await repositoryPodcast();
-    return data;
+    responseFormat.statusCode = data.length
+        ? StatusCode.OK
+        : StatusCode.NO_CONTENT;
+    responseFormat.body = data;
+    return responseFormat;
 };
 export { serviceListEpisodes };
 //# sourceMappingURL=list-episodes.js.map
