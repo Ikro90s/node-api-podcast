@@ -1,5 +1,2 @@
-/**
- * @deprecated Use PodcastService class directly for better performance.
- */
-export declare const serviceListEpisodes: () => Promise<import("../models/podcast-transfer-model.js").podcastTransferModel>;
+export declare const serviceListEpisodes: () => Promise<import("../models/podcast-transfer-model.js").PodcastTransferModel>;
 //# sourceMappingURL=list-episodes.d.ts.map

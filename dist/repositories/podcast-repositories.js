@@ -4,16 +4,16 @@ import { fileURLToPath } from 'url';
 import {} from '../models/podcast-model.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const pathdata = path.join(__dirname, '../repositories/podcasts.json');
-export const repositoryPodcast = async (podcastName) => {
+const dataFilePath = path.join(__dirname, '../repositories/podcasts.json');
+export const findPodcasts = async (podcastName) => {
     const language = 'utf-8';
-    const data = fileSystem.readFileSync(pathdata, language);
-    let jsonFile = JSON.parse(data);
+    const data = fileSystem.readFileSync(dataFilePath, language);
+    let podcasts = JSON.parse(data);
     if (podcastName) {
-        jsonFile = jsonFile.filter((podcast) => {
+        podcasts = podcasts.filter((podcast) => {
             return podcast.podcastName === podcastName;
         });
     }
-    return jsonFile;
+    return podcasts;
 };
 //# sourceMappingURL=podcast-repositories.js.map

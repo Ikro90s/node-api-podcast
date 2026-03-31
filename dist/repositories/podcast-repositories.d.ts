@@ -1,3 +1,3 @@
 import { type IPodcast } from '../models/podcast-model.js';
-export declare const repositoryPodcast: (podcastName?: string) => Promise<IPodcast[]>;
+export declare const findPodcasts: (podcastName?: string) => Promise<IPodcast[]>;
 //# sourceMappingURL=podcast-repositories.d.ts.map

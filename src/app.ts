@@ -9,13 +9,13 @@ const app = async (
   request: http.IncomingMessage,
   response: http.ServerResponse,
 ) => {
-  const [baseUrl] = request.url?.split('?') || [];
-  console.log('baseUrl:', baseUrl);
+  const [basePath] = request.url?.split('?') || [];
+  console.log('basePath:', basePath);
   //listar podcasts
-  if (request.method === HttpMethods.GET && baseUrl === Routes.LIST)
+  if (request.method === HttpMethods.GET && basePath === Routes.LIST)
     await podcastController.getListEpisodes(request, response);
   //filtrar podcasts
-  if (request.method === HttpMethods.GET && baseUrl === Routes.FILTER)
+  if (request.method === HttpMethods.GET && basePath === Routes.FILTER)
     await podcastController.getFilterEpisodes(request, response);
 };
 

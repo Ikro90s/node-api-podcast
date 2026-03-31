@@ -1,14 +1,14 @@
-import type { podcastTransferModel } from '../models/podcast-transfer-model.js';
-import { repositoryPodcast } from '../repositories/podcast-repositories.js';
+import type { PodcastTransferModel } from '../models/podcast-transfer-model.js';
+import { findPodcasts } from '../repositories/podcast-repositories.js';
 import { StatusCode } from '../utils/status-code.js';
 
 export class PodcastService {
   /**
    * Busca episódios, opcionalmente filtrados pelo parâmetro 'p' na URL.
    */
-  public async getEpisodes(url?: string): Promise<podcastTransferModel> {
+  public async getEpisodes(url?: string): Promise<PodcastTransferModel> {
     const query = this.parseQuery(url);
-    const data = await repositoryPodcast(query);
+    const data = await findPodcasts(query);
 
     return {
       statusCode: data.length ? StatusCode.OK : StatusCode.NO_CONTENT,

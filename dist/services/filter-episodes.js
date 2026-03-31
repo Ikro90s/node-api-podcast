@@ -1,4 +1,4 @@
-import { repositoryPodcast } from '../repositories/podcast-repositories.js';
+import { findPodcasts } from '../repositories/podcast-repositories.js';
 import { StatusCode } from '../utils/status-code.js';
 export class PodcastService {
     /**
@@ -6,7 +6,7 @@ export class PodcastService {
      */
     async getEpisodes(url) {
         const query = this.parseQuery(url);
-        const data = await repositoryPodcast(query);
+        const data = await findPodcasts(query);
         return {
             statusCode: data.length ? StatusCode.OK : StatusCode.NO_CONTENT,
             body: data,

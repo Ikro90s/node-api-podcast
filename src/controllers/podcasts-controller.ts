@@ -3,27 +3,29 @@ import { PodcastService } from '../services/filter-episodes.js';
 import { ContentType } from '../utils/content-type.js';
 
 export class PodcastController {
-  constructor(private service = new PodcastService()) {}
+  constructor(private podcastService = new PodcastService()) {}
 
-  public getListEpisodes = async (_: IncomingMessage, res: ServerResponse) => {
-    const content = await this.service.getEpisodes();
-    this.send(res, content);
+  public getListEpisodes = async (
+    _: IncomingMessage,
+    response: ServerResponse,
+  ) => {
+    const content = await this.podcastService.getEpisodes();
+    this.sendResponse(response, content);
   };
 
   public getFilterEpisodes = async (
-    req: IncomingMessage,
-    res: ServerResponse,
+    request: IncomingMessage,
+    response: ServerResponse,
   ) => {
-    const content = await this.service.getEpisodes(req.url);
-    this.send(res, content);
+    const content = await this.podcastService.getEpisodes(request.url);
+    this.sendResponse(response, content);
   };
 
-  private send(res: ServerResponse, data: { statusCode: number; body: any }) {
-    res.writeHead(data.statusCode, { 'Content-Type': ContentType.JSON });
-    res.end(JSON.stringify(data.body));
+  private sendResponse(
+    response: ServerResponse,
+    data: { statusCode: number; body: any },
+  ) {
+    response.writeHead(data.statusCode, { 'Content-Type': ContentType.JSON });
+    response.end(JSON.stringify(data.body));
   }
 }
-
-// Exemplo de uso no roteador:
-// const controller = new PodcastController();
-// router.get('/path', (req, res) => controller.getListEpisodes(req, res));
