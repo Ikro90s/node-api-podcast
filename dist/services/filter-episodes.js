@@ -1,21 +1,24 @@
 import { repositoryPodcast } from '../repositories/podcast-repositories.js';
 import { StatusCode } from '../utils/status-code.js';
-const serviceFilterEpisodes = async (url) => {
-    let responseFormat = {
-        statusCode: 0,
-        body: [],
-    };
-    // Extrai somente a parte da query para evitar split manual por parametro fixo.
-    const rawQuery = url?.split('?')[1] || '';
-    // Suporta os dois formatos de parametro: ?p=other e ?podcastName=other.
-    const params = new URLSearchParams(rawQuery);
-    const queryString = params.get('p') || '';
-    const data = await repositoryPodcast(queryString);
-    responseFormat.statusCode = data.length
-        ? StatusCode.OK
-        : StatusCode.NO_CONTENT;
-    responseFormat.body = data;
-    return responseFormat;
-};
+export class PodcastService {
+    /**
+     * Busca episódios, opcionalmente filtrados pelo parâmetro 'p' na URL.
+     */
+    async getEpisodes(url) {
+        const query = this.parseQuery(url);
+        const data = await repositoryPodcast(query);
+        return {
+            statusCode: data.length ? StatusCode.OK : StatusCode.NO_CONTENT,
+            body: data,
+        };
+    }
+    parseQuery(url) {
+        const params = new URLSearchParams(url?.split('?')[1] ?? '');
+        return params.get('p') ?? '';
+    }
+}
+// Mantendo compatibilidade com exportação padrão se necessário,
+// mas o ideal é instanciar a classe no controller.
+const serviceFilterEpisodes = (url) => new PodcastService().getEpisodes(url);
 export default serviceFilterEpisodes;
 //# sourceMappingURL=filter-episodes.js.map

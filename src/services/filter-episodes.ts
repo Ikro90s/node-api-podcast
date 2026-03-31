@@ -2,26 +2,28 @@ import type { podcastTransferModel } from '../models/podcast-transfer-model.js';
 import { repositoryPodcast } from '../repositories/podcast-repositories.js';
 import { StatusCode } from '../utils/status-code.js';
 
-const serviceFilterEpisodes = async (
-  url: string | undefined,
-): Promise<podcastTransferModel> => {
-  let responseFormat: podcastTransferModel = {
-    statusCode: 0,
-    body: [],
-  };
-  // Extrai somente a parte da query para evitar split manual por parametro fixo.
-  const rawQuery = url?.split('?')[1] || '';
+export class PodcastService {
+  /**
+   * Busca episódios, opcionalmente filtrados pelo parâmetro 'p' na URL.
+   */
+  public async getEpisodes(url?: string): Promise<podcastTransferModel> {
+    const query = this.parseQuery(url);
+    const data = await repositoryPodcast(query);
 
-  // Suporta os dois formatos de parametro: ?p=other e ?podcastName=other.
-  const params = new URLSearchParams(rawQuery);
-  const queryString = params.get('p') || '';
-  const data = await repositoryPodcast(queryString);
+    return {
+      statusCode: data.length ? StatusCode.OK : StatusCode.NO_CONTENT,
+      body: data,
+    };
+  }
 
-  responseFormat.statusCode = data.length
-    ? StatusCode.OK
-    : StatusCode.NO_CONTENT;
-  responseFormat.body = data;
-  return responseFormat;
-};
+  private parseQuery(url?: string): string {
+    const params = new URLSearchParams(url?.split('?')[1] ?? '');
+    return params.get('p') ?? '';
+  }
+}
 
+// Mantendo compatibilidade com exportação padrão se necessário,
+// mas o ideal é instanciar a classe no controller.
+const serviceFilterEpisodes = (url: string | undefined) =>
+  new PodcastService().getEpisodes(url);
 export default serviceFilterEpisodes;

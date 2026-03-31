@@ -1,23 +1,29 @@
 import { IncomingMessage, ServerResponse } from 'http';
-import type { podcastTransferModel } from '../models/podcast-transfer-model.js';
-import serviceFilterEpisodes from '../services/filter-episodes.js';
-import { serviceListEpisodes } from '../services/list-episodes.js';
+import { PodcastService } from '../services/filter-episodes.js';
 import { ContentType } from '../utils/content-type.js';
 
-export const getListEpisodes = async (
-  req: IncomingMessage,
-  res: ServerResponse,
-) => {
-  const content: podcastTransferModel = await serviceListEpisodes();
-  res.writeHead(content.statusCode, { 'content-type': ContentType.JSON });
-  res.end(JSON.stringify(content.body));
-};
+export class PodcastController {
+  constructor(private service = new PodcastService()) {}
 
-export const getFilterEpisodes = async (
-  req: IncomingMessage,
-  res: ServerResponse,
-) => {
-  const content: podcastTransferModel = await serviceFilterEpisodes(req.url);
-  res.writeHead(content.statusCode, { 'content-type': ContentType.JSON });
-  res.end(JSON.stringify(content.body));
-};
+  public getListEpisodes = async (_: IncomingMessage, res: ServerResponse) => {
+    const content = await this.service.getEpisodes();
+    this.send(res, content);
+  };
+
+  public getFilterEpisodes = async (
+    req: IncomingMessage,
+    res: ServerResponse,
+  ) => {
+    const content = await this.service.getEpisodes(req.url);
+    this.send(res, content);
+  };
+
+  private send(res: ServerResponse, data: { statusCode: number; body: any }) {
+    res.writeHead(data.statusCode, { 'Content-Type': ContentType.JSON });
+    res.end(JSON.stringify(data.body));
+  }
+}
+
+// Exemplo de uso no roteador:
+// const controller = new PodcastController();
+// router.get('/path', (req, res) => controller.getListEpisodes(req, res));

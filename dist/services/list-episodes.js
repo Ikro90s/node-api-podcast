@@ -1,16 +1,6 @@
-import { repositoryPodcast } from '../repositories/podcast-repositories.js';
-import { StatusCode } from '../utils/status-code.js';
-const serviceListEpisodes = async () => {
-    let responseFormat = {
-        statusCode: 0,
-        body: [],
-    };
-    const data = await repositoryPodcast();
-    responseFormat.statusCode = data.length
-        ? StatusCode.OK
-        : StatusCode.NO_CONTENT;
-    responseFormat.body = data;
-    return responseFormat;
-};
-export { serviceListEpisodes };
+import { PodcastService } from './filter-episodes.js';
+/**
+ * @deprecated Use PodcastService class directly for better performance.
+ */
+export const serviceListEpisodes = () => new PodcastService().getEpisodes();
 //# sourceMappingURL=list-episodes.js.map

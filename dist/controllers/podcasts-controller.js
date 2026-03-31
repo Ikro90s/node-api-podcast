@@ -1,16 +1,28 @@
 import { IncomingMessage, ServerResponse } from 'http';
-import serviceFilterEpisodes from '../services/filter-episodes.js';
-import { serviceListEpisodes } from '../services/list-episodes.js';
+import { PodcastService } from '../services/filter-episodes.js';
 import { ContentType } from '../utils/content-type.js';
-import { StatusCode } from '../utils/status-code.js';
-export const getListEpisodes = async (req, res) => {
-    const content = await serviceListEpisodes();
-    res.writeHead(StatusCode.OK, { 'content-type': ContentType.JSON });
-    res.end(JSON.stringify(content));
-};
-export const getFilterEpisodes = async (req, res) => {
-    const content = await serviceFilterEpisodes(req.url);
-    res.writeHead(content.statusCode, { 'content-type': ContentType.JSON });
-    res.end(JSON.stringify(content.body));
-};
+export class PodcastController {
+    service;
+    constructor(service = new PodcastService()) {
+        this.service = service;
+    }
+    /**
+     * Uso de arrow functions para preservar o contexto do 'this'.
+     */
+    getListEpisodes = async (_, res) => {
+        const content = await this.service.getEpisodes();
+        this.send(res, content);
+    };
+    getFilterEpisodes = async (req, res) => {
+        const content = await this.service.getEpisodes(req.url);
+        this.send(res, content);
+    };
+    send(res, data) {
+        res.writeHead(data.statusCode, { 'Content-Type': ContentType.JSON });
+        res.end(JSON.stringify(data.body));
+    }
+}
+// Exemplo de uso no roteador:
+// const controller = new PodcastController();
+// router.get('/path', (req, res) => controller.getListEpisodes(req, res));
 //# sourceMappingURL=podcasts-controller.js.map
